@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package file;
+
+service File {
+  rpc FileList(FileListRequest) returns (FileListResponse) {}
+  rpc FileRead(FileReadRequest) returns (FileReadResponse) {}
+  rpc FileWrite(FileWriteRequest) returns (FileWriteResponse) {}
+}
+
+message FileListRequest {
+  string base = 1;
+  bool recursive = 2;
+}
+
+message FileListResponse {
+  string base = 1;
+  repeated FileDescriptor files = 2;
+}
+
+message FileDescriptor {
+  string filepath = 1;
+  bool isDirectory = 2;
+  uint64 size = 3;
+}
+
+message FileReadRequest {
+  string filepath = 1;
+  uint64 position = 2;
+  uint64 maxSize = 3;
+}
+
+message FileReadResponse {
+  string filepath = 1;
+  uint64 position = 2;
+  bytes content = 3;
+  bool EOF = 4;
+}
+
+message FileWriteRequest {
+  string filepath = 1;
+  bool overwrite = 2;
+  bytes content = 3;
+}
+
+message FileWriteResponse {
+  string filepath = 1;
+  uint64 size = 2;
+}
